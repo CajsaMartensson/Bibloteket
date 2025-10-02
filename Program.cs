@@ -52,5 +52,16 @@
                 }
             }
         }
+
+        static void Choices()
+        {
+            Console.WriteLine("Vad vill du göra? Ange vilken siffra");
+            Console.WriteLine("1. Låna böcker");
+            Console.WriteLine("2. Låna bok");
+            Console.WriteLine("3. Lämna tillbaka bok");
+            Console.WriteLine("4. Mina lån");
+            Console.WriteLine("5. Logga ut");
+
+        }
     }
 }

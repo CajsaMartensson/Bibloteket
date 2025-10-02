@@ -7,7 +7,8 @@
         static void Main(string[] args)
         {
             LogIn();
-            Choices();
+            int selectedChoice = Choices();
+            ChooseOption(selectedChoice);
         }
 
         static void LogIn()
@@ -72,7 +73,28 @@
             return choice;
         }
 
+        static void ChooseOption(int a)
+        {
+            switch (a)
+            {
+                case 1:
+                    //Öppna låna böcker
+                    break;
+                case 2:
+                    //Öppna låna bok
+                    break;
+                case 3:
+                    //Lämna tillbaka lånad bok
+                    break;
+                case 4:
+                    //Mina Lån
+                    break;
+                case 5:
+                    //Logga ut
+                    break;
+            }
 
+        }
 
     }
 }

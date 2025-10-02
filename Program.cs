@@ -4,6 +4,10 @@
     {
         //Cajsa Mårtensson SUT25
 
+        static string[] bookTitles = { "Mio, min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
+
+        static int[] numberOfCopies = { 3, 4, 2, 3, 2 };
+
         static void Main(string[] args)
         {
             LogIn();
@@ -20,8 +24,8 @@
 
             Console.WriteLine("Välkommen till biblotekets lånesystem!");
 
-           //Loop that gives user max 3 attempts to try to log in
-            for (int attempts = 0; attempts <= 3; attempts++)
+            //Loop that gives user max 3 attempts to try to log in
+            for (int attempts = 0; attempts < 3; attempts++)
             {
 
                 Console.Write("Skriv in ditt användarnamn: ");
@@ -44,6 +48,7 @@
                         break;
                     }
                 }
+
                 if (loggedIn)
                 {
                     break;
@@ -63,7 +68,7 @@
             Console.WriteLine("3. Lämna tillbaka bok");
             Console.WriteLine("4. Mina lån");
             Console.WriteLine("5. Logga ut");
-        
+
             int choice;
             while (!int.TryParse(Console.ReadLine(), out choice))
             {
@@ -81,7 +86,7 @@
                     ShowBooks();
                     break;
                 case 2:
-                    //Öppna låna bok
+                    BorrowBooks();
                     break;
                 case 3:
                     //Lämna tillbaka lånad bok
@@ -95,17 +100,33 @@
             }
         }
 
-        static void ShowBooks()
+        static int[] ShowBooks()
         {
-            int[] numberOfCopies = { 3, 4, 2, 3, 2 };
+            //int[] numberOfCopies = { 3, 4, 2, 3, 2 };
+
+            //string[] bookTitles = { "Mio, min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
 
             Console.WriteLine("Alla tillgängliga böcker:");
-            Console.WriteLine($"1. Mio, min Mio av Astrid Lindgren. {numberOfCopies[0]} exemplar.");
-            Console.WriteLine($"2. Pippi Långstrump av Astrid Lindgren. {numberOfCopies[1]} exemplar.");
-            Console.WriteLine($"3. Bröderna Lejonhjärta av Astrid Lindgren. {numberOfCopies[2]} exemplar.");
-            Console.WriteLine($"4. Lotta på bråkmakargatan av Astrid Lindgren. {numberOfCopies[3]} exemplar.");
-            Console.WriteLine($"5. Madicken av Astrid Lindgren. {numberOfCopies[4]} exemplar.");
+            Console.WriteLine($"1. {bookTitles[0]}. {numberOfCopies[0]} exemplar.");
+            Console.WriteLine($"2. {bookTitles[1]}. {numberOfCopies[1]} exemplar.");
+            Console.WriteLine($"3. {bookTitles[2]}. {numberOfCopies[2]} exemplar.");
+            Console.WriteLine($"4. {bookTitles[3]}. {numberOfCopies[3]} exemplar.");
+            Console.WriteLine($"5. {bookTitles[4]}. {numberOfCopies[4]} exemplar.");
+
+            return numberOfCopies;
+
         }
 
+        static void BorrowBooks()
+        {
+            Console.WriteLine("Välj vilken bok du vill låna genom att ange nummer.");
+            int book;
+            while (!int.TryParse(Console.ReadLine(), out book) || book < 1 || book > 5)
+            {
+                Console.WriteLine("Ogiltligt val.");
+            }
+
+
+        }
     }
 }

@@ -8,6 +8,8 @@
 
         static int[] numberOfCopies = { 3, 4, 2, 3, 2 };
 
+        static int[] savedBooks = new int[4];
+
         static void Main(string[] args)
         {
             LogIn();
@@ -117,7 +119,7 @@
 
         }
 
-        static void BorrowBooks()
+        static int BorrowBooks()
         {
             Console.Write("Välj vilken bok du vill låna genom att ange nummer: ");
             int book;
@@ -127,18 +129,37 @@
             }
 
             //Eftersom den börjar räkna på 0, så användarens 3 är egentligen 2, därav -1
-            int i = book - 1;
+            int chosenBook = book - 1;
 
-            if (numberOfCopies[i]> 0)
+            if (numberOfCopies[chosenBook] > 0)
             {
                 Console.WriteLine("Denna bok kan du låna.");
-                numberOfCopies[i]--;
+                numberOfCopies[chosenBook]--;
+                SaveBooksInList(chosenBook);
             }
             else
             {
                 Console.WriteLine("Tyvärr, inga exemplar av denna bok.");
             }
 
+            return chosenBook;
+        }
+
+        static void SaveBooksInList(int a)
+        {
+            //För att ha ett startvärde på antal lånade böcker
+            int savedBooksAmount = 0; 
+            
+            //Om man har lånat mer än savedBooks (global array) längd. Plussa på för varje gång, tills att man inte kan låna fler.
+            if (savedBooksAmount < savedBooks.Length)
+            {
+                a = savedBooks[savedBooksAmount];
+                savedBooksAmount++;
+            }
+            else
+            {
+                Console.WriteLine("Du kan inte låna fler böcker.");
+            }
         }
     }
 }

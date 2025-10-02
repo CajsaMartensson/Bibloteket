@@ -58,7 +58,7 @@
         static int Choices()
         {
             Console.WriteLine("Vad vill du göra? Ange vilken siffra");
-            Console.WriteLine("1. Låna böcker");
+            Console.WriteLine("1. Visa böcker");
             Console.WriteLine("2. Låna bok");
             Console.WriteLine("3. Lämna tillbaka bok");
             Console.WriteLine("4. Mina lån");
@@ -78,7 +78,7 @@
             switch (a)
             {
                 case 1:
-                    //Öppna låna böcker
+                    ShowBooks();
                     break;
                 case 2:
                     //Öppna låna bok
@@ -93,7 +93,18 @@
                     //Logga ut
                     break;
             }
+        }
 
+        static void ShowBooks()
+        {
+            int[] numberOfCopies = { 3, 4, 2, 3, 2 };
+
+            Console.WriteLine("Alla tillgängliga böcker:");
+            Console.WriteLine($"1. Mio, min Mio av Astrid Lindgren. {numberOfCopies[0]} exemplar.");
+            Console.WriteLine($"2. Pippi Långstrump av Astrid Lindgren. {numberOfCopies[1]} exemplar.");
+            Console.WriteLine($"3. Bröderna Lejonhjärta av Astrid Lindgren. {numberOfCopies[2]} exemplar.");
+            Console.WriteLine($"4. Lotta på bråkmakargatan av Astrid Lindgren. {numberOfCopies[3]} exemplar.");
+            Console.WriteLine($"5. Madicken av Astrid Lindgren. {numberOfCopies[4]} exemplar.");
         }
 
     }

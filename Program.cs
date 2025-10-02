@@ -119,13 +119,25 @@
 
         static void BorrowBooks()
         {
-            Console.WriteLine("Välj vilken bok du vill låna genom att ange nummer.");
+            Console.Write("Välj vilken bok du vill låna genom att ange nummer: ");
             int book;
             while (!int.TryParse(Console.ReadLine(), out book) || book < 1 || book > 5)
             {
                 Console.WriteLine("Ogiltligt val.");
             }
 
+            //Eftersom den börjar räkna på 0, så användarens 3 är egentligen 2, därav -1
+            int i = book - 1;
+
+            if (numberOfCopies[i]> 0)
+            {
+                Console.WriteLine("Denna bok kan du låna.");
+                numberOfCopies[i]--;
+            }
+            else
+            {
+                Console.WriteLine("Tyvärr, inga exemplar av denna bok.");
+            }
 
         }
     }

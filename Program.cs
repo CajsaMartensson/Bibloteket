@@ -135,7 +135,7 @@
             {
                 Console.WriteLine("Denna bok kan du låna.");
                 numberOfCopies[chosenBook]--;
-                SaveBooksInList(chosenBook);
+                SaveBooksInArray(chosenBook);
             }
             else
             {
@@ -145,7 +145,7 @@
             return chosenBook;
         }
 
-        static void SaveBooksInList(int a)
+        static void SaveBooksInArray(int a)
         {
             //För att ha ett startvärde på antal lånade böcker
             int savedBooksAmount = 0; 
@@ -160,6 +160,8 @@
             {
                 Console.WriteLine("Du kan inte låna fler böcker.");
             }
+
+            Console.WriteLine($"Du har lånat {bookTitles[a]} ");
         }
     }
 }

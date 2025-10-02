@@ -7,6 +7,7 @@
         static void Main(string[] args)
         {
             LogIn();
+            Choices();
         }
 
         static void LogIn()
@@ -53,7 +54,7 @@
             }
         }
 
-        static void Choices()
+        static int Choices()
         {
             Console.WriteLine("Vad vill du göra? Ange vilken siffra");
             Console.WriteLine("1. Låna böcker");
@@ -61,7 +62,17 @@
             Console.WriteLine("3. Lämna tillbaka bok");
             Console.WriteLine("4. Mina lån");
             Console.WriteLine("5. Logga ut");
+        
+            int choice;
+            while (!int.TryParse(Console.ReadLine(), out choice))
+            {
+                Console.WriteLine("Ogiltligt val.");
+            }
 
+            return choice;
         }
+
+
+
     }
 }

@@ -7,6 +7,8 @@
         static void Main(string[] args)
         {
             LogIn();
+            int selectedChoice = Choices();
+            ChooseOption(selectedChoice);
         }
 
         static void LogIn()
@@ -52,5 +54,47 @@
                 }
             }
         }
+
+        static int Choices()
+        {
+            Console.WriteLine("Vad vill du göra? Ange vilken siffra");
+            Console.WriteLine("1. Låna böcker");
+            Console.WriteLine("2. Låna bok");
+            Console.WriteLine("3. Lämna tillbaka bok");
+            Console.WriteLine("4. Mina lån");
+            Console.WriteLine("5. Logga ut");
+        
+            int choice;
+            while (!int.TryParse(Console.ReadLine(), out choice))
+            {
+                Console.WriteLine("Ogiltligt val.");
+            }
+
+            return choice;
+        }
+
+        static void ChooseOption(int a)
+        {
+            switch (a)
+            {
+                case 1:
+                    //Öppna låna böcker
+                    break;
+                case 2:
+                    //Öppna låna bok
+                    break;
+                case 3:
+                    //Lämna tillbaka lånad bok
+                    break;
+                case 4:
+                    //Mina Lån
+                    break;
+                case 5:
+                    //Logga ut
+                    break;
+            }
+
+        }
+
     }
 }

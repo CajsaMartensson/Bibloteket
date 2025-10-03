@@ -5,16 +5,25 @@
         //Cajsa Mårtensson SUT25
 
         static string[] bookTitles = { "Mio, min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
-
         static int[] numberOfCopies = { 3, 4, 2, 3, 2 };
 
         static int[] savedBooks = new int[4];
+        //För att ha ett startvärde på antal lånade böcker:
+        static int savedBooksAmount = 0;
 
         static void Main(string[] args)
         {
             LogIn();
-            int selectedChoice = Choices();
-            ChooseOption(selectedChoice);
+
+            bool isRunning = true;
+
+            while (isRunning)
+            {
+                int selectedChoice = Choices();
+                ChooseOption(selectedChoice);
+
+            }
+
         }
 
         static void LogIn()
@@ -80,7 +89,7 @@
             return choice;
         }
 
-        static void ChooseOption(int a)
+        static bool ChooseOption(int a)
         {
             switch (a)
             {
@@ -91,32 +100,27 @@
                     BorrowBooks();
                     break;
                 case 3:
-                    //Lämna tillbaka lånad bok
+                    ReturnBook();
                     break;
                 case 4:
                     //Mina Lån
                     break;
                 case 5:
-                    //Logga ut
+                    LogIn();
+                    return false;
                     break;
             }
+            return true;
         }
 
-        static int[] ShowBooks()
+        static void ShowBooks()
         {
-            //int[] numberOfCopies = { 3, 4, 2, 3, 2 };
-
-            //string[] bookTitles = { "Mio, min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
-
             Console.WriteLine("Alla tillgängliga böcker:");
             Console.WriteLine($"1. {bookTitles[0]}. {numberOfCopies[0]} exemplar.");
             Console.WriteLine($"2. {bookTitles[1]}. {numberOfCopies[1]} exemplar.");
             Console.WriteLine($"3. {bookTitles[2]}. {numberOfCopies[2]} exemplar.");
             Console.WriteLine($"4. {bookTitles[3]}. {numberOfCopies[3]} exemplar.");
             Console.WriteLine($"5. {bookTitles[4]}. {numberOfCopies[4]} exemplar.");
-
-            return numberOfCopies;
-
         }
 
         static int BorrowBooks()
@@ -147,13 +151,11 @@
 
         static void SaveBooksInArray(int a)
         {
-            //För att ha ett startvärde på antal lånade böcker
-            int savedBooksAmount = 0; 
-            
+
             //Om man har lånat mer än savedBooks (global array) längd. Plussa på för varje gång, tills att man inte kan låna fler.
             if (savedBooksAmount < savedBooks.Length)
             {
-                a = savedBooks[savedBooksAmount];
+                savedBooks[savedBooksAmount] = a;
                 savedBooksAmount++;
             }
             else
@@ -162,6 +164,21 @@
             }
 
             Console.WriteLine($"Du har lånat {bookTitles[a]} ");
+        }
+
+        static void ReturnBook()
+        {
+            if(savedBooksAmount == 0)
+            {
+                Console.WriteLine("Du har inga lånade böcker");
+            }
+
+            for (int i = 0; i < savedBooksAmount; i++)
+            {
+                int numberInArray = savedBooks[i];
+                Console.WriteLine($"Du har lånat: {bookTitles[numberInArray]}");
+            }
+
         }
     }
 }

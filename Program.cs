@@ -17,6 +17,7 @@
         static void Main(string[] args)
         {
             LogIn();
+            Console.Clear();
 
             bool isRunning = true;
 
@@ -58,19 +59,23 @@
                     if (usernames[i] == writtenUsername && password[i] == writtenPassword)
                     {
                         loggedIn = true;
-                        Console.WriteLine("Inloggning lyckades");
+                        Console.WriteLine("Inloggning lyckades!");
                         break;
                     }
                 }
 
                 if (loggedIn)
                 {
+                    Console.WriteLine();
+                    Console.WriteLine("Tryck enter för att fortsätta!");
+                    Console.ReadKey();
                     break;
                 }
                 else
                 {
                     Console.WriteLine("Fel användarnamn eller lösenord! Försök igen.");
                 }
+
             }
         }
 
@@ -97,18 +102,23 @@
             switch (a)
             {
                 case 1:
+                    Console.Clear();
                     ShowBooks();
                     break;
                 case 2:
+                    Console.Clear();
                     BorrowBooks();
                     break;
                 case 3:
+                    Console.Clear();
                     ReturnBook();
                     break;
                 case 4:
+                    Console.Clear();
                     MyLoans();
                     break;
                 case 5:
+                    Console.Clear();
                     LogIn();
                     return false;
                     break;
@@ -123,6 +133,10 @@
             {
                 Console.WriteLine($"{i + 1}. {bookTitles[i]}. {numberOfCopies[i]} exemplar.");
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Tryck enter för att fortsätta!");
+            Console.ReadKey();
         }
 
         static int BorrowBooks()
@@ -197,7 +211,7 @@
 
             for (int i = 0; i < bookTitles.Length; i++)
             {
-                if(bookTitles[i] == returnedBook)
+                if (bookTitles[i] == returnedBook)
                 {
                     int copies = int.Parse(numberOfCopies[i]);
                     copies++;
@@ -205,7 +219,7 @@
                     Console.WriteLine($"Du har lämnat {bookTitles[i]} tillbaka");
                 }
             }
-            }
+        }
 
         static void MyLoans()
         {
@@ -223,5 +237,5 @@
                 }
             }
         }
-        }
     }
+}

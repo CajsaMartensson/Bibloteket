@@ -4,10 +4,13 @@
     {
         //Cajsa Mårtensson SUT25
 
-        static string[] bookTitles = { "Mio, min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
-        static int[] numberOfCopies = { 3, 4, 2, 3, 2 };
+        //Använd en jagged array för samla alla användare och lösenord i samma array och spara böckerna i dessa. 
+        static string[][] userData = new string[3][];
 
-        static int[] savedBooks = new int[4];
+        static string[] bookTitles = new string []{ "Mio, min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
+        static string[] numberOfCopies = new string[]{"3", "4", "2", "3", "2" };
+        static string[] savedBooks = new string[4];
+
         //För att ha ett startvärde på antal lånade böcker:
         static int savedBooksAmount = 0;
 
@@ -116,11 +119,10 @@
         static void ShowBooks()
         {
             Console.WriteLine("Alla tillgängliga böcker:");
-            Console.WriteLine($"1. {bookTitles[0]}. {numberOfCopies[0]} exemplar.");
-            Console.WriteLine($"2. {bookTitles[1]}. {numberOfCopies[1]} exemplar.");
-            Console.WriteLine($"3. {bookTitles[2]}. {numberOfCopies[2]} exemplar.");
-            Console.WriteLine($"4. {bookTitles[3]}. {numberOfCopies[3]} exemplar.");
-            Console.WriteLine($"5. {bookTitles[4]}. {numberOfCopies[4]} exemplar.");
+            for (int i = 0; i < bookTitles.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {bookTitles[i]}. {numberOfCopies[i]} exemplar.");
+            }
         }
 
         static int BorrowBooks()
@@ -135,10 +137,13 @@
             //Eftersom den börjar räkna på 0, så användarens 3 är egentligen 2, därav -1
             int chosenBook = book - 1;
 
-            if (numberOfCopies[chosenBook] > 0)
+            //Konventera string (numberOfCopies) to int
+            int copiesOfChosenBook = int.Parse(numberOfCopies[chosenBook]);
+
+            if (copiesOfChosenBook > 0)
             {
                 Console.WriteLine("Denna bok kan du låna.");
-                numberOfCopies[chosenBook]--;
+                copiesOfChosenBook--;
                 SaveBooksInArray(chosenBook);
             }
             else
@@ -155,8 +160,14 @@
             //Om man har lånat mer än savedBooks (global array) längd. Plussa på för varje gång, tills att man inte kan låna fler.
             if (savedBooksAmount < savedBooks.Length)
             {
-                savedBooks[savedBooksAmount] = a;
+                savedBooks[savedBooksAmount] = bookTitles[a];
                 savedBooksAmount++;
+
+
+                //Konventera string numberOfCopies till int. Ta bort en bok från exemplar.
+                int amountOfCopies = int.Parse(numberOfCopies[a]);
+                amountOfCopies--;
+                numberOfCopies[a] = amountOfCopies.ToString();
             }
             else
             {
@@ -175,7 +186,8 @@
 
             for (int i = 0; i < savedBooksAmount; i++)
             {
-                int numberInArray = savedBooks[i];
+                int numberInArray = int.Parse(savedBooks[i]);
+
                 Console.WriteLine($"Du har lånat: {bookTitles[numberInArray]}");
             }
 

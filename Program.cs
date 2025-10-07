@@ -7,8 +7,8 @@
         //Använd en jagged array för samla alla användare och lösenord i samma array och spara böckerna i dessa. 
         static string[][] userData = new string[3][];
 
-        static string[] bookTitles = new string []{ "Mio, min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
-        static string[] numberOfCopies = new string[]{"3", "4", "2", "3", "2" };
+        static string[] bookTitles = new string[] { "Mio, min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
+        static string[] numberOfCopies = new string[] { "3", "4", "2", "3", "2" };
         static string[] savedBooks = new string[4];
 
         //För att ha ett startvärde på antal lånade böcker:
@@ -142,7 +142,7 @@
 
             if (copiesOfChosenBook > 0)
             {
-                Console.WriteLine("Denna bok kan du låna.");
+                Console.WriteLine("Denna bok finns att låna.");
                 copiesOfChosenBook--;
                 SaveBooksInArray(chosenBook);
             }
@@ -179,18 +179,42 @@
 
         static void ReturnBook()
         {
-            if(savedBooksAmount == 0)
+            if (savedBooksAmount == 0)
             {
                 Console.WriteLine("Du har inga lånade böcker");
             }
 
+            Console.WriteLine("Dina lånade böcker:");
             for (int i = 0; i < savedBooksAmount; i++)
             {
-                int numberInArray = int.Parse(savedBooks[i]);
-
-                Console.WriteLine($"Du har lånat: {bookTitles[numberInArray]}");
+                Console.WriteLine($"{i + 1}. {savedBooks[i]}");
             }
 
+
+
+            Console.WriteLine("Skriv siffran på den bok vill du lämna tillbaka?");
+            int book;
+            while (!int.TryParse(Console.ReadLine(), out book) || book < savedBooksAmount || book > savedBooksAmount)
+            {
+                Console.WriteLine("Ogiltligt val.");
+            }
+
+
+            //Eftersom den börjar räkna på 0
+            int chosenBook = book - 1;
+
+            string returnedBook = savedBooks[chosenBook];
+
+            for (int i = 0; i < bookTitles.Length; i++)
+            {
+                if(bookTitles[i] == returnedBook)
+                {
+                    int copies = int.Parse(numberOfCopies[i]);
+                    copies++;
+                    numberOfCopies[i] = copies.ToString();
+                    Console.WriteLine($"Du har lämnat {bookTitles[i]} tillbaka");
+                }
+            }
+            }
         }
     }
-}

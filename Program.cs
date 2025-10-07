@@ -106,7 +106,7 @@
                     ReturnBook();
                     break;
                 case 4:
-                    //Mina Lån
+                    MyLoans();
                     break;
                 case 5:
                     LogIn();
@@ -179,17 +179,7 @@
 
         static void ReturnBook()
         {
-            if (savedBooksAmount == 0)
-            {
-                Console.WriteLine("Du har inga lånade böcker");
-            }
-
-            Console.WriteLine("Dina lånade böcker:");
-            for (int i = 0; i < savedBooksAmount; i++)
-            {
-                Console.WriteLine($"{i + 1}. {savedBooks[i]}");
-            }
-
+            MyLoans();
 
 
             Console.WriteLine("Skriv siffran på den bok vill du lämna tillbaka?");
@@ -216,5 +206,22 @@
                 }
             }
             }
+
+        static void MyLoans()
+        {
+            if (savedBooksAmount == 0)
+            {
+                Console.WriteLine("Du har inga lånade böcker");
+            }
+
+            else
+            {
+                Console.WriteLine("Dina lånade böcker:");
+                for (int i = 0; i < savedBooksAmount; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {savedBooks[i]}");
+                }
+            }
+        }
         }
     }

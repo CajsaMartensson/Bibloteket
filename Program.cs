@@ -218,7 +218,7 @@ namespace Bibloteket
                 return;
             }
 
-            Console.WriteLine("Skriv siffran på den bok vill du lämna tillbaka?");
+            Console.WriteLine("Skriv siffran på den bok vill du lämna tillbaka: ");
             int book;
             while (!int.TryParse(Console.ReadLine(), out book) || book < 1 || book > savedBooksAmount)
             {

@@ -211,6 +211,12 @@ namespace Bibloteket
             string returnedBook = userData[loggedInUser][2];
             string[] borrowedBooks = returnedBook.Split(", ");
 
+            if (string.IsNullOrEmpty(returnedBook))
+            {
+                Console.WriteLine("Därför kan du lämna tillbaka några böcker");
+                PressEnterToContinue();
+                return;
+            }
 
             Console.WriteLine("Skriv siffran på den bok vill du lämna tillbaka?");
             int book;
@@ -243,15 +249,22 @@ namespace Bibloteket
             //FÖr att ange hur många platser i arrayen, utan den hade det blivit tomrad om vid den bok vi hoppade över.
             int indexForNewArray = 0;
 
+            bool removed = false;
+
             //Loopa igenom varje bok jag lånat
             for (int i = 0; i < borrowedBooks.Length; i++)
+            {
                 //Om boken inte är den som user lämnade tillbaka
-                if (borrowedBooks[i] != chosenBook)
+                if (borrowedBooks[i] == chosenBook && !removed)
                 {
+                    removed = true;     //Markera att vi redan tagit bort exemplar
+                    continue;           //hoppa över just det här exemplaret
+                }
                     //Lägg till boken i den nya arrayn
                     newArrayWithoutOldBook[indexForNewArray] = borrowedBooks[i];
                     indexForNewArray++;
-                }
+            }
+
             //Updatera användarens lån, globala array-lån
             userData[loggedInUser][2] = string.Join(", ", newArrayWithoutOldBook);
             savedBooksAmount--;

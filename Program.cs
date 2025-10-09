@@ -4,12 +4,27 @@
     {
         //Cajsa Mårtensson SUT25
 
-        //Använd en jagged array för samla alla användare och lösenord i samma array och spara böckerna i dessa. 
-        static string[][] userData = new string[3][];
 
-        static string[] bookTitles = new string[] { "Mio, min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
-        static string[] numberOfCopies = new string[] { "3", "4", "2", "3", "2" };
-        static string[] savedBooks = new string[4];
+
+
+        //BÖCKER
+        static string[] bookTitles = { "Mio min Mio av Astrid Lindgren", "Pippi Långstrump av Astrid Lindgren", "Bröderna Lejonhjärta av Astrid Lindgren", "Lotta på bråkmakargatan av Astrid Lindgren", "Madicken av Astrid Lindgren" };
+        static string[] numberOfCopies = { "3", "4", "2", "3", "2" };
+
+
+
+        //Använd en jagged array för samla alla användare och lösenord i samma array och spara böckerna i dessa. 
+        static string[][] userData = new string[][]
+        {
+            new string[] {"nallepuh", "1234", ""},
+            new string[] {"nasse", "4321", ""},
+            new string[] {"ior", "6381", ""},
+            new string[] {"tiger", "9836", "" },
+            new string[] {"uggla", "5376", "" }
+        };
+
+        static int loggedInUser;
+
 
         //För att ha ett startvärde på antal lånade böcker:
         static int savedBooksAmount = 0;
@@ -23,9 +38,9 @@
 
             while (isRunning)
             {
+                Console.WriteLine();
                 int selectedChoice = Choices();
                 ChooseOption(selectedChoice);
-
             }
 
         }
@@ -34,10 +49,7 @@
         {
             bool loggedIn = false;
 
-            string[] usernames = { "nallepuh", "nasse", "ior", "tiger", "uggla" };
-            int[] password = { 1234, 4321, 6381, 9836, 5376 };
-
-            Console.WriteLine("Välkommen till biblotekets lånesystem!");
+            Console.WriteLine("Välkommen till biblotekets lånesystem! Du har 3 försök!");
 
             //Loop that gives user max 3 attempts to try to log in
             for (int attempts = 0; attempts < 3; attempts++)
@@ -47,18 +59,15 @@
                 string writtenUsername = Console.ReadLine();
 
                 Console.Write("Skriv in ditt lösenord: ");
-                int writtenPassword;
-                while (!int.TryParse(Console.ReadLine(), out writtenPassword))
-                {
-                    Console.WriteLine("Enbart siffror!");
-                }
+                string writtenPassword = Console.ReadLine();
 
                 //Control if written username och password match
-                for (int i = 0; i < usernames.Length; i++)
+                for (int i = 0; i < userData.Length; i++)
                 {
-                    if (usernames[i] == writtenUsername && password[i] == writtenPassword)
+                    if (userData[i][0] == writtenUsername && userData[i][1] == writtenPassword)
                     {
                         loggedIn = true;
+                        loggedInUser = i;
                         Console.WriteLine("Inloggning lyckades!");
                         break;
                     }
@@ -141,6 +150,9 @@
 
         static int BorrowBooks()
         {
+            ShowBooks();
+            Console.WriteLine();
+
             Console.Write("Välj vilken bok du vill låna genom att ange nummer: ");
             int book;
             while (!int.TryParse(Console.ReadLine(), out book) || book < 1 || book > 5)
@@ -157,6 +169,7 @@
             if (copiesOfChosenBook > 0)
             {
                 Console.WriteLine("Denna bok finns att låna.");
+                savedBooksAmount++;
                 copiesOfChosenBook--;
                 SaveBooksInArray(chosenBook);
             }
@@ -170,23 +183,31 @@
 
         static void SaveBooksInArray(int a)
         {
+            //Vald bok av användaren från metoden ovan
+            string book = bookTitles[a];
 
-            //Om man har lånat mer än savedBooks (global array) längd. Plussa på för varje gång, tills att man inte kan låna fler.
-            if (savedBooksAmount < savedBooks.Length)
+            //Ser om användaren har några tidigare lån [först vilken användare] och sen [2: tom array]
+            string currentLoans = userData[loggedInUser][2];
+
+            //Inbyggd metod för om string är tom
+            if (string.IsNullOrEmpty(currentLoans))
             {
-                savedBooks[savedBooksAmount] = bookTitles[a];
-                savedBooksAmount++;
-
-
-                //Konventera string numberOfCopies till int. Ta bort en bok från exemplar.
-                int amountOfCopies = int.Parse(numberOfCopies[a]);
-                amountOfCopies--;
-                numberOfCopies[a] = amountOfCopies.ToString();
+                //Lägg till vald bok i den tomma arrayn
+                userData[loggedInUser][2] = book;
             }
+
             else
             {
-                Console.WriteLine("Du kan inte låna fler böcker.");
+                //Hitta arrayen, om det finns en bok, addera den nya boken till stängen.
+                userData[loggedInUser][2] += $", {book}";
             }
+
+
+            //Konventera string numberOfCopies till int. Ta bort en bok från exemplar.
+            int amountOfCopies = int.Parse(numberOfCopies[a]);
+            amountOfCopies--;
+            numberOfCopies[a] = amountOfCopies.ToString();
+
 
             Console.WriteLine($"Du har lånat {bookTitles[a]} ");
         }
@@ -195,47 +216,83 @@
         {
             MyLoans();
 
+            string returnedBook = userData[loggedInUser][2];
+            string[] borrowedBooks = returnedBook.Split(", ");
+
 
             Console.WriteLine("Skriv siffran på den bok vill du lämna tillbaka?");
             int book;
-            while (!int.TryParse(Console.ReadLine(), out book) || book < savedBooksAmount || book > savedBooksAmount)
+            while (!int.TryParse(Console.ReadLine(), out book) || book < 1 || book > savedBooksAmount)
             {
-                Console.WriteLine("Ogiltligt val.");
+                Console.WriteLine("Ogiltligt val. Försök igen.");
             }
 
 
             //Eftersom den börjar räkna på 0
-            int chosenBook = book - 1;
+            string chosenBook = borrowedBooks[book - 1];
 
-            string returnedBook = savedBooks[chosenBook];
 
+            //Användaren lämnar tillbaka bok och boken plussas på i exemplar i bibloteket
             for (int i = 0; i < bookTitles.Length; i++)
             {
-                if (bookTitles[i] == returnedBook)
+                if (bookTitles[i] == chosenBook)
                 {
                     int copies = int.Parse(numberOfCopies[i]);
                     copies++;
                     numberOfCopies[i] = copies.ToString();
-                    Console.WriteLine($"Du har lämnat {bookTitles[i]} tillbaka");
+                    Console.WriteLine($"Du har lämnat tillbaka {bookTitles[i]}");
+                    Console.WriteLine("Tryck enter för att fortsätta...");
+                    Console.ReadKey();
+                    break;
                 }
             }
-        }
 
+            //Skapa en ny array med de böcker som är kvar, de som user lämnat tillbaka blir inte med
+            //borrowedBooks.Length - 1, är för jag vet att en ska bort så nya arrayen ska va 1 kortare.
+            string[] newArrayWithoutOldBook = new string[borrowedBooks.Length - 1];
+           
+
+            //FÖr att ange hur många platser i arrayen, utan den hade det blivit tomrad om vid den bok vi hoppade över.
+            int indexForNewArray = 0;
+
+            //Loopa igenom varje bok jag lånat
+            for (int i = 0; i < borrowedBooks.Length; i++)
+                //Om boken inte är den som user lämnade tillbaka
+                if (borrowedBooks[i] != chosenBook)
+                {
+                    //Lägg till boken i den nya arrayn
+                    newArrayWithoutOldBook[indexForNewArray] = borrowedBooks[i];
+                    indexForNewArray++;
+                }
+            //Updatera användarens lån, globala array-lån
+            userData[loggedInUser][2] = string.Join(", ", newArrayWithoutOldBook);
+            savedBooksAmount--;
+
+
+        }
+            
+
+
+        
         static void MyLoans()
         {
-            if (savedBooksAmount == 0)
+            string currentLoans = userData[loggedInUser][2];
+
+            if (string.IsNullOrEmpty(currentLoans))
             {
                 Console.WriteLine("Du har inga lånade böcker");
+                return;
             }
 
-            else
+            //Gjort om current loans till borrow books array
+            string[] borrowedBooks = currentLoans.Split(", ");
+
+            Console.WriteLine("Dina lånade böcker:");
+            for (int i = 0; i < borrowedBooks.Length; i++)
             {
-                Console.WriteLine("Dina lånade böcker:");
-                for (int i = 0; i < savedBooksAmount; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {savedBooks[i]}");
-                }
+                Console.WriteLine($"{i + 1}. {borrowedBooks[i]}");
             }
         }
     }
 }
+

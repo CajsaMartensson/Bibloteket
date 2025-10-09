@@ -20,7 +20,7 @@
         static string[] user4 = ["tiger", "9836", ""];
         static string[] user5 = ["uggla", "5376", ""];
         static string[][] userData = [user1, user2, user3, user4, user5];
-        
+
 
         static int loggedInUser;
 
@@ -30,24 +30,27 @@
 
         static void Main(string[] args)
         {
-            LogIn();
             Console.Clear();
 
-            bool isRunning = true;
+            bool isRunning = LogIn();
 
-            while (isRunning)
+            if (isRunning)
+                while (isRunning)
+                {
+                    Console.WriteLine();
+                    int selectedChoice = Choices();
+                    ChooseOption(selectedChoice);
+                }
+
+            else
             {
-                Console.WriteLine();
-                int selectedChoice = Choices();
-                ChooseOption(selectedChoice);
+                Console.WriteLine("Programmet avslutas.");
             }
 
         }
 
-        static void LogIn()
+        static bool LogIn()
         {
-            bool loggedIn = false;
-
             Console.WriteLine("Välkommen till biblotekets lånesystem! Du har 3 försök!");
 
             //Loop that gives user max 3 attempts to try to log in
@@ -57,7 +60,7 @@
                 Console.Write("Skriv in ditt användarnamn: ");
                 string writtenUsername = Console.ReadLine();
 
-                Console.Write("Skriv in ditt lösenord: ");
+                Console.Write("Skriv in din PIN-kod: ");
                 string writtenPassword = Console.ReadLine();
 
                 //Control if written username och password match
@@ -65,26 +68,16 @@
                 {
                     if (userData[i][0] == writtenUsername && userData[i][1] == writtenPassword)
                     {
-                        loggedIn = true;
                         loggedInUser = i;
                         Console.WriteLine("Inloggning lyckades!");
-                        break;
+                        return true;
                     }
                 }
-
-                if (loggedIn)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Tryck enter för att fortsätta!");
-                    Console.ReadKey();
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Fel användarnamn eller lösenord! Försök igen.");
-                }
+                Console.WriteLine("Fel användarnamn eller lösenord! Försök igen.");
 
             }
+            Console.WriteLine("Du har gjort 3 misslyckade försök.");
+            return false;
         }
 
         static int Choices()
@@ -249,7 +242,7 @@
             //Skapa en ny array med de böcker som är kvar, de som user lämnat tillbaka blir inte med
             //borrowedBooks.Length - 1, är för jag vet att en ska bort så nya arrayen ska va 1 kortare.
             string[] newArrayWithoutOldBook = new string[borrowedBooks.Length - 1];
-           
+
 
             //FÖr att ange hur många platser i arrayen, utan den hade det blivit tomrad om vid den bok vi hoppade över.
             int indexForNewArray = 0;
@@ -269,10 +262,10 @@
 
 
         }
-            
 
 
-        
+
+
         static void MyLoans()
         {
             string currentLoans = userData[loggedInUser][2];

@@ -56,7 +56,6 @@
             //Loop that gives user max 3 attempts to try to log in
             for (int attempts = 0; attempts < 3; attempts++)
             {
-
                 Console.Write("Skriv in ditt användarnamn: ");
                 string writtenUsername = Console.ReadLine();
 
@@ -69,7 +68,10 @@
                     if (userData[i][0] == writtenUsername && userData[i][1] == writtenPassword)
                     {
                         loggedInUser = i;
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Inloggning lyckades!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        PressEnterToContinue();
                         return true;
                     }
                 }
@@ -82,6 +84,7 @@
 
         static int Choices()
         {
+            Console.Clear();
             Console.WriteLine("Vad vill du göra? Ange vilken siffra");
             Console.WriteLine("1. Visa böcker");
             Console.WriteLine("2. Låna bok");
@@ -283,6 +286,24 @@
             for (int i = 0; i < borrowedBooks.Length; i++)
             {
                 Console.WriteLine($"{i + 1}. {borrowedBooks[i]}");
+            }
+        }
+
+
+        static void PressEnterToContinue()
+        {
+            Console.WriteLine("Tryck enter för att fortsätta...");
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Du måste trycka enter-knappen för att fortsätta");
+                }
             }
         }
     }

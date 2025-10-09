@@ -14,14 +14,13 @@
 
 
         //Använd en jagged array för samla alla användare och lösenord i samma array och spara böckerna i dessa. 
-        static string[][] userData = new string[][]
-        {
-            new string[] {"nallepuh", "1234", ""},
-            new string[] {"nasse", "4321", ""},
-            new string[] {"ior", "6381", ""},
-            new string[] {"tiger", "9836", "" },
-            new string[] {"uggla", "5376", "" }
-        };
+        static string[] user1 = ["nallepuh", "1234", ""];
+        static string[] user2 = ["nasse", "4321", ""];
+        static string[] user3 = ["ior", "6381", ""];
+        static string[] user4 = ["tiger", "9836", ""];
+        static string[] user5 = ["uggla", "5376", ""];
+        static string[][] userData = [user1, user2, user3, user4, user5];
+        
 
         static int loggedInUser;
 
